@@ -5,24 +5,6 @@ import pandas as pd
 import numpy as np
 from dotenv import load_dotenv
 
-# ========== SINGLE INSTANCE LOCK ==========
-LOCK_FILE = os.path.join(os.path.dirname(__file__), ".ebinex_bot.lock")
-def acquire_lock():
-    try:
-        fd = os.open(LOCK_FILE, os.O_CREAT | os.O_EXCL | os.O_RDWR)
-        os.write(fd, str(os.getpid()).encode())
-        os.close(fd)
-    except FileExistsError:
-        print("[LOCK] Já existe uma instância rodando. Saindo.")
-        sys.exit(0)
-def release_lock():
-    try:
-        if os.path.exists(LOCK_FILE):
-            os.remove(LOCK_FILE)
-    except Exception:
-        pass
-acquire_lock()
-atexit.register(release_lock)
 # ==========================================
 
 load_dotenv()
@@ -395,3 +377,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
